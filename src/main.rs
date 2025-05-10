@@ -32,7 +32,7 @@ async fn decode_runestone(
             let protostones_json: Vec<serde_json::Value> = protostones.iter().map(|p| {
                 json!({
                     "type": format!("{:?}", p),
-                    "burn": p.burn,
+                    "burn": p.burn.unwrap_or(0).to_string(),
                     "message": serde_json::to_string(&p.message).unwrap(),
                     "edicts": p.edicts.iter().map(|e| {
                         json!({
@@ -40,7 +40,7 @@ async fn decode_runestone(
                                 "block": e.id.block,
                                 "tx": e.id.tx
                             }),
-                            "amount": e.amount,
+                            "amount": e.amount.to_string(),
                             "output": e.output
                         })
                     }).collect::<Vec<_>>(),
